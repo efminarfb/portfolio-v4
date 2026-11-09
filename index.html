@@ -85,7 +85,11 @@
     padding-block:clamp(3rem,7vw,5rem) clamp(2.25rem,5vw,3.5rem);
   }
   .hero-bg{position:absolute;inset:0;z-index:-1;background:#17140F}
-  .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:50% 60%}
+  .hero-bg img{
+    width:100%;height:100%;object-fit:cover;object-position:50% 60%;
+    animation:drift 30s ease-in-out infinite alternate;will-change:transform
+  }
+  @keyframes drift{from{transform:scale(1.02)}to{transform:scale(1.11)}}
   .hero-bg::after{
     content:"";position:absolute;inset:0;
     background:linear-gradient(180deg,rgba(12,10,8,.84) 0%,rgba(12,10,8,.44) 36%,rgba(12,10,8,.74) 74%,rgba(12,10,8,.95) 100%);
@@ -124,7 +128,10 @@
   /* ---------- cover ---------- */
   .cover{padding-top:clamp(2rem,4.5vw,3.25rem)}
   .bleed{width:100%;overflow:hidden;background:var(--bone-2)}
-  .bleed img{width:100%;height:clamp(230px,44vw,540px);object-fit:cover;object-position:50% 0}
+  .bleed img{
+    width:100%;height:clamp(230px,44vw,540px);object-fit:cover;object-position:50% 0;
+    transform:translate3d(0,var(--py,0px),0) scale(1.09);will-change:transform
+  }
   .cover figcaption{margin-top:.75rem}
   .frame{border:1px solid var(--rule);background:var(--bone-2);padding:clamp(.35rem,1vw,.6rem)}
   .frame img{width:100%;height:auto}
@@ -212,6 +219,25 @@
   .tier .when{margin-top:auto;font-family:var(--mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
   .fine{font-size:.75rem;color:var(--muted);margin-top:.9rem;font-style:italic;font-family:var(--serif)}
 
+  .neg{
+    display:flex;align-items:center;justify-content:space-between;gap:clamp(1rem,3vw,2rem);
+    flex-wrap:wrap;margin-top:clamp(.9rem,2.2vw,1.3rem);padding:clamp(1.1rem,2.6vw,1.7rem);
+    background:var(--ink);color:var(--bone);position:relative;overflow:hidden;
+  }
+  .neg::after{
+    content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;
+    background:radial-gradient(circle,rgba(168,65,42,.55),rgba(168,65,42,0) 70%);pointer-events:none
+  }
+  .neg .k{color:#BCB1A0}
+  .neg-line{
+    font-family:var(--serif);font-weight:300;font-size:clamp(1.05rem,1.9vw,1.4rem);
+    line-height:1.32;letter-spacing:-.015em;margin-top:.4rem;max-width:44ch;color:var(--bone)
+  }
+  .neg-line em{font-style:italic;color:#EDA98A}
+  .neg .btn{border-color:rgba(242,237,227,.45);color:var(--bone);position:relative;z-index:1}
+  .neg .btn:hover{background:var(--bone);color:var(--ink)}
+  @media (max-width:640px){ .neg{align-items:flex-start} }
+
   /* ---------- process ---------- */
   .steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(1rem,2.5vw,2rem)}
   @media (max-width:900px){ .steps{grid-template-columns:repeat(2,minmax(0,1fr))} }
@@ -246,7 +272,8 @@
   .band-bg{
     position:absolute;inset:0;z-index:0;
     background:url("assets/photo-city.jpg") center 62%/cover no-repeat;
-    opacity:.34;filter:grayscale(.55)
+    opacity:.34;filter:grayscale(.55);
+    transform:translate3d(0,var(--py,0px),0) scale(1.14);will-change:transform
   }
   .band-inner{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,285px);gap:clamp(1.25rem,4vw,3rem);align-items:center}
   .band-line{
@@ -264,7 +291,8 @@
   .contact-bg{
     position:absolute;inset:0;z-index:0;
     background:url("assets/photo-dark.jpg") center/cover no-repeat;
-    opacity:.55
+    opacity:.55;
+    transform:translate3d(0,var(--py,0px),0) scale(1.16);will-change:transform
   }
   .contact::after{
     content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
@@ -303,10 +331,16 @@
   /* ---------- motion ---------- */
   .rv{opacity:0;transform:translateY(10px);transition:opacity 1s cubic-bezier(.2,.7,.3,1),transform 1s cubic-bezier(.2,.7,.3,1)}
   .rv.in{opacity:1;transform:none}
+  .pic{opacity:0;transform:translateY(18px);transition:opacity 1.1s ease,transform 1.3s cubic-bezier(.2,.7,.3,1)}
+  .pic.in{opacity:1;transform:none}
+  figure:hover .frame{border-color:var(--ink);transform:translateY(-2px)}
+  .frame{transition:border-color .45s ease,transform .45s cubic-bezier(.2,.7,.3,1)}
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
-    .rv{opacity:1;transform:none;transition:none}
-    *{transition-duration:.01ms !important}
+    .rv,.pic{opacity:1;transform:none;transition:none}
+    .hero-bg img{animation:none}
+    .bleed img,.band-bg,.contact-bg{transform:none}
+    *{transition-duration:.01ms !important;animation-duration:.01ms !important}
   }
 </style>
 </head>
@@ -366,7 +400,7 @@
   <section class="cover">
     <figure class="rv">
       <div class="bleed">
-        <img src="assets/klienera-desktop.jpg" width="1600" height="1000" alt="Klienera dashboard: revenue, active clients and the projects in progress" decoding="async">
+        <img data-parallax="16" src="assets/klienera-desktop.jpg" width="1600" height="1000" alt="Klienera dashboard: revenue, active clients and the projects in progress" decoding="async">
       </div>
       <div class="wrap">
         <figcaption class="cap"><span>Klienera — the business operating system I designed and built. Live at klienera.vercel.app</span><b>Cover</b></figcaption>
@@ -447,13 +481,13 @@
           <div class="duo">
             <figure>
               <div class="frame">
-                <img src="assets/klienera-desktop.jpg" width="1600" height="1000" alt="Klienera dashboard showing revenue, active clients and projects" loading="lazy" decoding="async">
+                <img class="pic" src="assets/klienera-desktop.jpg" width="1600" height="1000" alt="Klienera dashboard showing revenue, active clients and projects" loading="lazy" decoding="async">
               </div>
               <figcaption class="cap"><span>The dashboard: revenue, active clients, work in flight.</span><b>Fig. 1</b></figcaption>
             </figure>
             <figure>
               <div class="frame">
-                <img src="assets/klienera-mobile.jpg" width="780" height="1386" alt="Klienera on a phone, showing the same business data on a narrow screen" loading="lazy" decoding="async">
+                <img class="pic" src="assets/klienera-mobile.jpg" width="780" height="1386" alt="Klienera on a phone, showing the same business data on a narrow screen" loading="lazy" decoding="async">
               </div>
               <figcaption class="cap"><span>The same data on a phone.</span><b>Fig. 2</b></figcaption>
             </figure>
@@ -526,7 +560,16 @@
             <span class="when">3–6 weeks</span>
           </article>
         </div>
-        <p class="fine">Half up front, half at launch. If the quote doesn't fit your budget, say so and I'll tell you what to cut rather than what to fake.</p>
+        <div class="neg rv">
+          <div>
+            <span class="k">If the number is the problem</span>
+            <p class="neg-line">The price is <em>negotiable</em>. Tell me what you can spend and I'll tell you honestly what that buys.</p>
+          </div>
+          <a class="btn" href="mailto:efminardb@gmail.com?subject=Budget%20question&body=Hi%20Sadaf%2C%0A%0AMy%20budget%20is%3A%20%0AWhat%20I%20need%3A%20%0AWhen%20I%20need%20it%3A%20%0A">Email me
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <p class="fine">Half up front, half at launch. No surprise invoice at the end.</p>
       </div>
     </div>
   </section>
@@ -566,7 +609,7 @@
   </section>
 
   <section class="band">
-    <div class="band-bg" aria-hidden="true"></div>
+    <div class="band-bg" data-parallax="20" aria-hidden="true"></div>
     <div class="wrap band-inner">
       <div class="rv">
         <span class="k">Between the lines</span>
@@ -574,7 +617,7 @@
       </div>
       <figure class="band-fig rv">
         <div class="frame">
-          <img src="assets/klienera-mobile.jpg" width="780" height="1386" alt="Klienera's dashboard on a narrow phone screen" loading="lazy" decoding="async">
+          <img class="pic" src="assets/klienera-mobile.jpg" width="780" height="1386" alt="Klienera's dashboard on a narrow phone screen" loading="lazy" decoding="async">
         </div>
         <figcaption class="cap"><span>Klienera at 390px.</span><b>Fig. 3</b></figcaption>
       </figure>
@@ -590,7 +633,7 @@
     <div class="about-grid">
       <figure class="portrait rv">
         <div class="frame">
-          <img src="assets/portrait.jpg" width="720" height="900" alt="Portrait of Sadaf Al Selim" loading="lazy" decoding="async">
+          <img class="pic" src="assets/portrait.jpg" width="720" height="900" alt="Portrait of Sadaf Al Selim" loading="lazy" decoding="async">
         </div>
         <figcaption class="cap"><span>Dhaka, 2026.</span><b>Portrait</b></figcaption>
       </figure>
@@ -620,7 +663,7 @@
   </section>
 
   <section class="contact" id="contact">
-    <div class="contact-bg" aria-hidden="true"></div>
+    <div class="contact-bg" data-parallax="14" aria-hidden="true"></div>
     <div class="wrap">
       <span class="k rv">05 — Start here</span>
       <h2 class="rv">Tell me what you're <em>building</em>.</h2>
@@ -658,6 +701,8 @@
 
 <script>
   (function () {
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     var fmt = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Dhaka" });
     function tick() {
       var t = fmt.format(new Date());
@@ -667,20 +712,47 @@
     tick();
     setInterval(tick, 20000);
 
-    var items = document.querySelectorAll(".rv");
-    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var items = document.querySelectorAll(".rv, .pic");
     if (!("IntersectionObserver" in window) || reduce) {
       for (var j = 0; j < items.length; j++) items[j].classList.add("in");
-      return;
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+        });
+      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+      for (var k = 0; k < items.length; k++) {
+        items[k].style.transitionDelay = (Math.min(k % 3, 2) * 70) + "ms";
+        io.observe(items[k]);
+      }
     }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
-      });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
-    for (var k = 0; k < items.length; k++) {
-      items[k].style.transitionDelay = Math.min(k % 3, 2) * 70 + "ms";
-      io.observe(items[k]);
+
+    if (reduce) return;
+
+    var layers = [].slice.call(document.querySelectorAll("[data-parallax]"));
+    if (layers.length && window.requestAnimationFrame) {
+      var queued = false;
+      var render = function () {
+        queued = false;
+        var vh = window.innerHeight || 1;
+        for (var i = 0; i < layers.length; i++) {
+          var el = layers[i];
+          var box = el.parentElement || el;
+          var r = box.getBoundingClientRect();
+          if (r.bottom < -160 || r.top > vh + 160) continue;
+          var d = (r.top + r.height / 2 - vh / 2) / vh;
+          if (d > 1.2) d = 1.2;
+          else if (d < -1.2) d = -1.2;
+          var amount = parseFloat(el.getAttribute("data-parallax")) || 12;
+          el.style.setProperty("--py", (-d * amount).toFixed(2) + "px");
+        }
+      };
+      var onScroll = function () {
+        if (!queued) { queued = true; window.requestAnimationFrame(render); }
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
+      render();
     }
   })();
 </script>
