@@ -208,8 +208,9 @@
   .about-body p{color:var(--ink-soft)}
   .mono-panel{
     border:1px solid var(--rule);aspect-ratio:4/5;display:grid;place-items:center;
-    background:var(--bone-2);
+    background:var(--bone-2);max-width:220px;
   }
+  @media (max-width:860px){ .mono-panel{max-width:170px} }
   .mono-panel span{font-family:var(--serif);font-size:clamp(2.4rem,6vw,3.6rem);color:var(--muted);letter-spacing:-.04em}
 
   /* ---------- contact ---------- */
