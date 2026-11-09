@@ -77,8 +77,29 @@
   @media (max-width:880px){ .menu{display:none} }
   @media (max-width:520px){ .clock{display:none} }
 
-  /* ---------- masthead ---------- */
-  .mast{padding-top:clamp(2rem,5vw,3.5rem)}
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;isolation:isolate;overflow:hidden;
+    display:flex;align-items:flex-end;color:var(--bone);
+    min-height:clamp(520px,82vh,800px);
+    padding-block:clamp(3rem,7vw,5rem) clamp(2.25rem,5vw,3.5rem);
+  }
+  .hero-bg{position:absolute;inset:0;z-index:-1;background:#17140F}
+  .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:50% 60%}
+  .hero-bg::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(12,10,8,.84) 0%,rgba(12,10,8,.44) 36%,rgba(12,10,8,.74) 74%,rgba(12,10,8,.95) 100%);
+  }
+  .hero .mast-head{border-bottom-color:rgba(242,237,227,.28);padding-bottom:1rem}
+  .hero .k{color:#BFB4A2}
+  .hero h1{color:#FBF7EF;margin-top:clamp(1.1rem,3vw,2rem)}
+  .hero h1 em{color:#EDA98A}
+  .hero .lede{padding-top:clamp(1.5rem,3.5vw,2.25rem);margin-top:clamp(1.25rem,3vw,2rem);border-top:1px solid rgba(242,237,227,.22)}
+  .hero .lede p{color:#E0D7C7}
+  .hero .lede p b{color:#FBF7EF}
+  .hero .meta div{border-bottom-color:rgba(242,237,227,.18)}
+  .hero .meta dt{color:#BFB4A2}
+  .hero .meta dd{color:#F5F0E5}
   .mast-head{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding-bottom:1.1rem;border-bottom:1px solid var(--rule)}
   .mast-head .set{display:flex;gap:1.4rem;flex-wrap:wrap}
   h1{
@@ -218,10 +239,16 @@
 
   /* ---------- picture band ---------- */
   .band{
+    position:relative;overflow:hidden;
     margin-top:clamp(2.5rem,6vw,5rem);padding-block:clamp(1.75rem,4vw,3rem);
     background:var(--bone-2);border-top:1px solid var(--rule);
   }
-  .band-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,285px);gap:clamp(1.25rem,4vw,3rem);align-items:center}
+  .band-bg{
+    position:absolute;inset:0;z-index:0;
+    background:url("assets/photo-city.jpg") center 62%/cover no-repeat;
+    opacity:.34;filter:grayscale(.55)
+  }
+  .band-inner{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,285px);gap:clamp(1.25rem,4vw,3rem);align-items:center}
   .band-line{
     font-family:var(--serif);font-weight:300;font-size:clamp(1.35rem,3.2vw,2.35rem);
     line-height:1.16;letter-spacing:-.025em;margin-top:.6rem;max-width:23ch;
@@ -233,7 +260,17 @@
   .mono-panel span{font-family:var(--serif);font-size:clamp(2.4rem,6vw,3.6rem);color:var(--muted);letter-spacing:-.04em}
 
   /* ---------- contact ---------- */
-  .contact{background:var(--ink);color:var(--bone);margin-top:clamp(2.5rem,6vw,5rem);padding-block:clamp(2.5rem,6vw,4.5rem)}
+  .contact{position:relative;overflow:hidden;background:#100E0B;color:var(--bone);margin-top:clamp(2.5rem,6vw,5rem);padding-block:clamp(2.5rem,6vw,4.5rem)}
+  .contact-bg{
+    position:absolute;inset:0;z-index:0;
+    background:url("assets/photo-dark.jpg") center/cover no-repeat;
+    opacity:.55
+  }
+  .contact::after{
+    content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(16,14,11,.72),rgba(16,14,11,.5))
+  }
+  .contact .wrap{position:relative;z-index:1}
   .contact .k{color:#9A9182}
   .contact h2{
     font-family:var(--serif);font-weight:300;color:var(--bone);
@@ -258,6 +295,10 @@
   .colophon .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.75rem;color:var(--muted)}
   .colophon a{border-bottom:1px solid var(--rule-soft)}
   .colophon a:hover{color:var(--ink);border-color:var(--ink)}
+  .credits{
+    font-size:.6875rem;line-height:1.6;color:var(--muted);opacity:.9;
+    margin-top:.75rem;max-width:78ch;
+  }
 
   /* ---------- motion ---------- */
   .rv{opacity:0;transform:translateY(10px);transition:opacity 1s cubic-bezier(.2,.7,.3,1),transform 1s cubic-bezier(.2,.7,.3,1)}
@@ -294,7 +335,11 @@
 
 <main>
 
-  <section class="mast wrap">
+  <section class="hero" id="top">
+    <div class="hero-bg" aria-hidden="true">
+      <img src="assets/photo-hero.jpg" width="1600" height="1067" alt="" decoding="async">
+    </div>
+    <div class="wrap hero-inner">
     <div class="mast-head">
       <span class="k">Portfolio — Issue 01</span>
       <span class="set k">Dhaka, Bangladesh · Working worldwide</span>
@@ -314,6 +359,7 @@
         <div><dt>Reply time</dt><dd>Within a day</dd></div>
         <div><dt>Quoted in</dt><dd>Taka or dollars</dd></div>
       </dl>
+    </div>
     </div>
   </section>
 
@@ -520,6 +566,7 @@
   </section>
 
   <section class="band">
+    <div class="band-bg" aria-hidden="true"></div>
     <div class="wrap band-inner">
       <div class="rv">
         <span class="k">Between the lines</span>
@@ -573,6 +620,7 @@
   </section>
 
   <section class="contact" id="contact">
+    <div class="contact-bg" aria-hidden="true"></div>
     <div class="wrap">
       <span class="k rv">05 — Start here</span>
       <h2 class="rv">Tell me what you're <em>building</em>.</h2>
@@ -602,6 +650,9 @@
       <a href="https://wa.me/8801804555797" target="_blank" rel="noopener">WhatsApp</a> ·
       <a href="https://klienera.vercel.app" target="_blank" rel="noopener">Klienera</a>
     </span>
+  </div>
+  <div class="wrap">
+    <p class="credits">Photographs — “Dhaka Street”, Gary Lee Todd (CC0) · “Dhaka5”, ASaber91 (CC BY 2.0) · concrete, bittbox (CC BY 2.0) · paper, Sarai | Fotography (CC BY 2.0)</p>
   </div>
 </footer>
 
